@@ -1,6 +1,9 @@
 package main
 
-func main() {
-	// router/multiplexer to route
+import (
+	"github.com/goddamnnoob/notReddit/app"
+)
 
+func main() {
+	app.Start()
 }

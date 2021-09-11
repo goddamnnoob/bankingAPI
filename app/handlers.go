@@ -3,7 +3,10 @@ package app
 import (
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type User struct {
@@ -23,4 +26,13 @@ func getAllUsers(rw http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(rw).Encode(users)
 	}
 
+}
+
+func getUser(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Add("Contebt-Type", "application/json")
+	json.NewEncoder(rw).Encode(mux.Vars(r)["uid"])
+}
+
+func createUser(rw http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(rw, "User Created")
 }

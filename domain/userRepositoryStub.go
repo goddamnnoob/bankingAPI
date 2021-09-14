@@ -1,10 +1,5 @@
 package domain
 
-type UserRepository interface {
-	//port
-	GetAllUsers() ([]User, error)
-}
-
 // stub is placeholder that simulates the input
 type UserRepositoryStub struct {
 	users []User

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/goddamnnoob/notReddit/service"
 	"github.com/gorilla/mux"
 )
 
@@ -15,8 +16,12 @@ type User struct {
 	Username string `json:"username" xml:"username"`
 }
 
-func getAllUsers(rw http.ResponseWriter, r *http.Request) {
-	users := []User{{"Gow", 1, "lol"}, {"ldf", 2, "aaaaa"}, {"aaaa", 3, "wwwwwwwww"}}
+type UserHandlers struct {
+	service service.UserService
+}
+
+func (uh UserHandlers) getAllUsers(rw http.ResponseWriter, r *http.Request) {
+	users, _ := uh.service.GetAllUsers()
 
 	if r.Header.Get("Content-Type") == "application/xml" {
 		rw.Header().Add("Content-Type", "application/xml")

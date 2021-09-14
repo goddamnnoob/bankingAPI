@@ -13,3 +13,7 @@ type DefaultUserService struct {
 func (u DefaultUserService) GetAllUsers() ([]domain.User, error) {
 	return u.repo.GetAllUsers(), nil
 }
+
+func NewUserService(repository domain.UserRepository) DefaultUserService {
+	return DefaultUserService{repository}
+}

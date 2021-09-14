@@ -2,7 +2,7 @@ package domain
 
 type UserRepository interface {
 	//port
-	GetAllUsers(string) ([]User, error)
+	GetAllUsers() ([]User, error)
 }
 
 // stub is placeholder that simulates the input

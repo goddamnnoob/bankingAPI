@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/goddamnnoob/notReddit/domain"
+	"github.com/goddamnnoob/notReddit/service"
 	"github.com/gorilla/mux"
 )
 
@@ -12,8 +14,9 @@ func Start() {
 	// router/multiplexer to route
 	router := mux.NewRouter()
 
-	router.HandleFunc("/getAllUsers", getAllUsers).Methods(http.MethodGet)
-	router.HandleFunc("/users/{uid:[0-9]+}", getUser).Methods(http.MethodGet)
-	router.HandleFunc("/createUser", createUser).Methods(http.MethodPost)
+	//wiring together
+	uh := UserHandlers{service.NewUserService(domain.NewUserRepositoryStub())}
+
+	router.HandleFunc("/getAllUsers", uh.getAllUsers).Methods(http.MethodGet)
 	log.Fatal(http.ListenAndServe("localhost:8080", router))
 }

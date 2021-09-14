@@ -7,3 +7,8 @@ type User struct {
 	Username string `json:"username" xml:"username"`
 	Email    string `json:"email" xml:"email"`
 }
+
+type UserRepository interface {
+	//port
+	GetAllUsers() ([]User, error)
+}

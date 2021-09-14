@@ -10,7 +10,7 @@ type UserRepositoryStub struct {
 	users []User
 }
 
-func (u UserRepositoryStub) GetAllUsers(UID string) ([]User, error) {
+func (u UserRepositoryStub) GetAllUsers() ([]User, error) {
 	return u.users, nil
 }
 

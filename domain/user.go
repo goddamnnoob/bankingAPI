@@ -2,13 +2,16 @@ package domain
 
 // model
 type User struct {
-	Name     string `json:"name" xml:"name"`
-	UID      string `json:"uid" xml:"uid"`
-	Username string `json:"username" xml:"username"`
-	Email    string `json:"email" xml:"email"`
+	Id          string `json:"id" xml:"id"`
+	Name        string `json:"name" xml:"name"`
+	City        string `json:"city" xml:"city"`
+	Zipcode     string `json:"zipcode" xml:"zipcode"`
+	DateOfBirth string `json:"dateofbirth" xml:"dateofbirth"`
+	Status      string `json:"status" xml:"status"`
 }
 
 type UserRepository interface {
-	//port
+	//secondary port
 	GetAllUsers() ([]User, error)
+	ById(string) (*User, error)
 }

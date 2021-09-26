@@ -1,5 +1,6 @@
 package domain
 
+//mock adapter
 // stub is placeholder that simulates the input
 type UserRepositoryStub struct {
 	users []User
@@ -11,8 +12,8 @@ func (u UserRepositoryStub) GetAllUsers() ([]User, error) {
 
 func NewUserRepositoryStub() UserRepositoryStub {
 	users := []User{
-		{"Gowtham", "1", "mrmu", "gowtham@me.com"},
-		{"ZOOM", "2", "zoom", "zoom@zoom.com"},
+		{"1", "Gowtham", "chennai", "33333", "2.2.2002", "available"},
+		{"2", "Gotham", "chennai", "33332", "2.2.2003", "available"},
 	}
 	return UserRepositoryStub{users}
 }

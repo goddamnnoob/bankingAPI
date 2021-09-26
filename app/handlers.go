@@ -41,3 +41,16 @@ func getUser(rw http.ResponseWriter, r *http.Request) {
 func createUser(rw http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(rw, "User Created")
 }
+
+func (uh *UserHandlers) getUser(rw http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["user_id"]
+	user, err := uh.service.GetUser(id)
+	if err != nil {
+		rw.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(rw, err.Error())
+	} else {
+		rw.Header().Add("ContenT-Type", "application/json")
+		json.NewEncoder(rw).Encode(user)
+	}
+}

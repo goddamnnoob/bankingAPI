@@ -1,10 +1,13 @@
 package service
 
-import "github.com/goddamnnoob/notReddit/domain"
+import (
+	"github.com/goddamnnoob/notReddit/domain"
+	"github.com/goddamnnoob/notReddit/errs"
+)
 
 type UserService interface {
 	GetAllUsers() ([]domain.User, error)
-	GetUser(string) (*domain.User, error)
+	GetUser(string) (*domain.User, *errs.AppError)
 }
 
 type DefaultUserService struct {
@@ -19,6 +22,6 @@ func NewUserService(repository domain.UserRepository) DefaultUserService {
 	return DefaultUserService{repository}
 }
 
-func (s DefaultUserService) GetUser(id string) (*domain.User, error) {
+func (s DefaultUserService) GetUser(id string) (*domain.User, *errs.AppError) {
 	return s.repo.ById(id)
 }

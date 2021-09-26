@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/goddamnnoob/notReddit/errs"
+
 // model
 type User struct {
 	Id          string `json:"id" xml:"id"`
@@ -13,5 +15,5 @@ type User struct {
 type UserRepository interface {
 	//secondary port
 	GetAllUsers() ([]User, error)
-	ById(string) (*User, error)
+	ById(string) (*User, *errs.AppError)
 }

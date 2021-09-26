@@ -47,8 +47,8 @@ func (uh *UserHandlers) getUser(rw http.ResponseWriter, r *http.Request) {
 	id := vars["user_id"]
 	user, err := uh.service.GetUser(id)
 	if err != nil {
-		rw.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(rw, err.Error())
+		rw.WriteHeader(err.Code)
+		fmt.Fprintf(rw, err.Message)
 	} else {
 		rw.Header().Add("ContenT-Type", "application/json")
 		json.NewEncoder(rw).Encode(user)

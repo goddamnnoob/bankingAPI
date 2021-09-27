@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/goddamnnoob/notReddit/domain"
+	"github.com/goddamnnoob/notReddit/errs"
 	"github.com/goddamnnoob/notReddit/service"
 	"github.com/gorilla/mux"
 )
@@ -16,6 +18,27 @@ type UserHandlers struct {
 func (uh UserHandlers) getAllUsers(rw http.ResponseWriter, r *http.Request) {
 	users, err := uh.service.GetAllUsers()
 
+	if err != nil {
+		writeResponse(rw, http.StatusInternalServerError, err.AsMessage())
+	} else {
+		writeResponse(rw, http.StatusOK, users)
+	}
+}
+
+func (uh UserHandlers) getUsersByStatus(rw http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	var users []domain.User
+	var err *errs.AppError
+	st := 0
+	status, b := query["status"]
+	if status[0] == "active" {
+		st = 1
+	}
+	if !b || len(status) == 0 {
+		users, err = uh.service.GetAllUsers()
+	} else {
+		users, err = uh.service.GetUserByStatus(st)
+	}
 	if err != nil {
 		writeResponse(rw, http.StatusInternalServerError, err.AsMessage())
 	} else {

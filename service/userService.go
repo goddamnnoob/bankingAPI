@@ -8,6 +8,7 @@ import (
 type UserService interface {
 	GetAllUsers() ([]domain.User, *errs.AppError)
 	GetUser(string) (*domain.User, *errs.AppError)
+	GetUserByStatus(int) ([]domain.User, *errs.AppError)
 }
 
 type DefaultUserService struct {
@@ -24,4 +25,8 @@ func NewUserService(repository domain.UserRepository) DefaultUserService {
 
 func (s DefaultUserService) GetUser(id string) (*domain.User, *errs.AppError) {
 	return s.repo.ById(id)
+}
+
+func (s DefaultUserService) GetUserByStatus(status int) ([]domain.User, *errs.AppError) {
+	return s.repo.ByStatus(status)
 }

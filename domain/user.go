@@ -16,4 +16,5 @@ type UserRepository interface {
 	//secondary port
 	GetAllUsers() ([]User, *errs.AppError)
 	ById(string) (*User, *errs.AppError)
+	ByStatus(int) ([]User, *errs.AppError)
 }

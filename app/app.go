@@ -19,6 +19,7 @@ func Start() {
 	///uh := UserHandlers{service.NewUserService(domain.NewUserRepositoryStub())}
 
 	router.HandleFunc("/getAllUsers", uh.getAllUsers).Methods(http.MethodGet)
+	router.HandleFunc("/users", uh.getUsersByStatus).Methods(http.MethodGet)
 	router.HandleFunc("/users/{user_id:[0-9]+}", uh.getUser).Methods(http.MethodGet)
 	log.Fatal(http.ListenAndServe("localhost:8080", router))
 }

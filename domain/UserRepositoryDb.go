@@ -58,3 +58,22 @@ func (d UserRepositoryDb) ById(id string) (*User, *errs.AppError) {
 	}
 	return &u, nil
 }
+
+func (d UserRepositoryDb) ByStatus(status int) ([]User, *errs.AppError) {
+	getUsers := "select customer_id,name,city,zipcode,date_of_birth, status from customers where status=?"
+	rows, err := d.client.Query(getUsers, status)
+	if err != nil {
+		return nil, errs.NewUnexpectedError("Error Querying Customer Table ")
+	}
+	users := make([]User, 0)
+	for rows.Next() {
+
+		var u User
+		err := rows.Scan(&u.Id, &u.Name, &u.City, &u.Zipcode, &u.DateOfBirth, &u.Status)
+		if err != nil {
+			return nil, errs.NewUnexpectedError("Error while scanningUsers")
+		}
+		users = append(users, u)
+	}
+	return users, nil
+}

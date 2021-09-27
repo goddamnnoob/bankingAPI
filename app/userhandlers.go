@@ -2,35 +2,26 @@ package app
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	"net/http"
 
+	"github.com/goddamnnoob/notReddit/errs"
 	"github.com/goddamnnoob/notReddit/service"
 	"github.com/gorilla/mux"
 )
-
-type User struct {
-	Name     string `json:"name" xml:"name"`
-	UID      int64  `json:"uid" xml:"uid"`
-	Username string `json:"username" xml:"username"`
-}
 
 type UserHandlers struct {
 	service service.UserService
 }
 
 func (uh UserHandlers) getAllUsers(rw http.ResponseWriter, r *http.Request) {
-	users, _ := uh.service.GetAllUsers()
+	users, err := uh.service.GetAllUsers()
 
-	if r.Header.Get("Content-Type") == "application/xml" {
-		rw.Header().Add("Content-Type", "application/xml")
-		xml.NewEncoder(rw).Encode(users)
+	if err != nil {
+		writeResponse(rw, http.StatusInternalServerError, errs.NewUnexpectedError("Unxepected Error").AsMessage())
 	} else {
-		rw.Header().Add("Content-Type", "application/json")
-		json.NewEncoder(rw).Encode(users)
+		writeResponse(rw, http.StatusOK, users)
 	}
-
 }
 
 func getUser(rw http.ResponseWriter, r *http.Request) {
@@ -47,10 +38,17 @@ func (uh *UserHandlers) getUser(rw http.ResponseWriter, r *http.Request) {
 	id := vars["user_id"]
 	user, err := uh.service.GetUser(id)
 	if err != nil {
-		rw.WriteHeader(err.Code)
-		fmt.Fprintf(rw, err.Message)
+		writeResponse(rw, err.Code, err.AsMessage())
 	} else {
-		rw.Header().Add("ContenT-Type", "application/json")
-		json.NewEncoder(rw).Encode(user)
+		writeResponse(rw, http.StatusOK, user)
+	}
+}
+
+func writeResponse(rw http.ResponseWriter, code int, data interface{}) {
+	rw.Header().Add("Content-Type", "application/json")
+	rw.WriteHeader(code)
+	err := json.NewEncoder(rw).Encode(data)
+	if err != nil {
+		panic(err)
 	}
 }

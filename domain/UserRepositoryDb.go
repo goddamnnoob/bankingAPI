@@ -13,12 +13,11 @@ type UserRepositoryDb struct {
 	client *sql.DB
 }
 
-func (d UserRepositoryDb) GetAllUsers() ([]User, error) {
+func (d UserRepositoryDb) GetAllUsers() ([]User, *errs.AppError) {
 	getAll := "select customer_id,name,city,zipcode,date_of_birth, status from customers"
 	rows, err := d.client.Query(getAll)
 	if err != nil {
-		log.Println("Error Querying Customer Table " + err.Error())
-		return nil, err
+		return nil, errs.NewUnexpectedError("Error Querying Customer Table ")
 	}
 	users := make([]User, 0)
 	for rows.Next() {
@@ -26,8 +25,7 @@ func (d UserRepositoryDb) GetAllUsers() ([]User, error) {
 		var u User
 		err := rows.Scan(&u.Id, &u.Name, &u.City, &u.Zipcode, &u.DateOfBirth, &u.Status)
 		if err != nil {
-			log.Println("Error while scanningUsers" + err.Error())
-			return nil, err
+			return nil, errs.NewUnexpectedError("Error while scanningUsers")
 		}
 		users = append(users, u)
 	}

@@ -14,6 +14,6 @@ type User struct {
 
 type UserRepository interface {
 	//secondary port
-	GetAllUsers() ([]User, error)
+	GetAllUsers() ([]User, *errs.AppError)
 	ById(string) (*User, *errs.AppError)
 }

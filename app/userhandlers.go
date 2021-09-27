@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/goddamnnoob/notReddit/errs"
 	"github.com/goddamnnoob/notReddit/service"
 	"github.com/gorilla/mux"
 )
@@ -18,14 +17,14 @@ func (uh UserHandlers) getAllUsers(rw http.ResponseWriter, r *http.Request) {
 	users, err := uh.service.GetAllUsers()
 
 	if err != nil {
-		writeResponse(rw, http.StatusInternalServerError, errs.NewUnexpectedError("Unxepected Error").AsMessage())
+		writeResponse(rw, http.StatusInternalServerError, err.AsMessage())
 	} else {
 		writeResponse(rw, http.StatusOK, users)
 	}
 }
 
 func getUser(rw http.ResponseWriter, r *http.Request) {
-	rw.Header().Add("Contebt-Type", "application/json")
+	rw.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(rw).Encode(mux.Vars(r)["uid"])
 }
 

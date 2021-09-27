@@ -6,7 +6,7 @@ import (
 )
 
 type UserService interface {
-	GetAllUsers() ([]domain.User, error)
+	GetAllUsers() ([]domain.User, *errs.AppError)
 	GetUser(string) (*domain.User, *errs.AppError)
 }
 
@@ -14,7 +14,7 @@ type DefaultUserService struct {
 	repo domain.UserRepository
 }
 
-func (u DefaultUserService) GetAllUsers() ([]domain.User, error) {
+func (u DefaultUserService) GetAllUsers() ([]domain.User, *errs.AppError) {
 	return u.repo.GetAllUsers()
 }
 

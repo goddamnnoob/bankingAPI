@@ -8,7 +8,7 @@ import (
 
 type UserService interface {
 	GetAllUsers() ([]domain.User, *errs.AppError)
-	GetUser(string) (*domain.User, *errs.AppError)
+	GetUser(string) (*dto.UserResponse, *errs.AppError)
 	GetUserByStatus(int) ([]domain.User, *errs.AppError)
 }
 
@@ -25,7 +25,12 @@ func NewUserService(repository domain.UserRepository) DefaultUserService {
 }
 
 func (s DefaultUserService) GetUser(id string) (*dto.UserResponse, *errs.AppError) {
-	return s.repo.ById(id)
+	u, err := s.repo.ById(id)
+	if err != nil {
+		return nil, err
+	}
+	response := u.ToDto()
+	return &response, nil
 }
 
 func (s DefaultUserService) GetUserByStatus(status int) ([]domain.User, *errs.AppError) {

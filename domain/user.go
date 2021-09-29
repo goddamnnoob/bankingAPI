@@ -1,6 +1,9 @@
 package domain
 
-import "github.com/goddamnnoob/notReddit/errs"
+import (
+	"github.com/goddamnnoob/notReddit/dto"
+	"github.com/goddamnnoob/notReddit/errs"
+)
 
 // model
 type User struct {
@@ -17,4 +20,19 @@ type UserRepository interface {
 	GetAllUsers() ([]User, *errs.AppError)
 	ById(string) (*User, *errs.AppError)
 	ByStatus(int) ([]User, *errs.AppError)
+}
+
+func (u User) ToDto() dto.UserResponse {
+	statusAsText := "active"
+	if u.Status == "0" {
+		statusAsText = "inactive"
+	}
+	return dto.UserResponse{
+		Id:          u.Id,
+		Name:        u.Name,
+		City:        u.City,
+		Zipcode:     u.Zipcode,
+		DateOfBirth: u.DateOfBirth,
+		Status:      statusAsText,
+	}
 }

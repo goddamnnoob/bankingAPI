@@ -31,7 +31,7 @@ func (uh UserHandlers) getUsersByStatus(rw http.ResponseWriter, r *http.Request)
 	var err *errs.AppError
 	st := 0
 	status, b := query["status"]
-	if status[0] == "active" {
+	if b && status[0] == "active" {
 		st = 1
 	}
 	if !b || len(status) == 0 {

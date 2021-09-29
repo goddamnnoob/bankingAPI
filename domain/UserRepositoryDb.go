@@ -2,11 +2,11 @@ package domain
 
 import (
 	"database/sql"
-	"log"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goddamnnoob/notReddit/errs"
+	"github.com/goddamnnoob/notReddit/logger"
 )
 
 type UserRepositoryDb struct {
@@ -50,9 +50,10 @@ func (d UserRepositoryDb) ById(id string) (*User, *errs.AppError) {
 	err := rows.Scan(&u.Id, &u.Name, &u.City, &u.Zipcode, &u.DateOfBirth, &u.Status)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			logger.Error("Error while scanning customers" + err.Error())
 			return nil, errs.NewNotFoundError("User Not Found")
 		} else {
-			log.Println("Error while scan user: " + err.Error())
+			logger.Error("Error while scan user: " + err.Error())
 			return nil, errs.NewUnexpectedError("Unexpected db error")
 		}
 	}
@@ -63,7 +64,8 @@ func (d UserRepositoryDb) ByStatus(status int) ([]User, *errs.AppError) {
 	getUsers := "select customer_id,name,city,zipcode,date_of_birth, status from customers where status=?"
 	rows, err := d.client.Query(getUsers, status)
 	if err != nil {
-		return nil, errs.NewUnexpectedError("Error Querying Customer Table ")
+		logger.Error("Error while Querying User Table" + err.Error())
+		return nil, errs.NewUnexpectedError("Error Querying User Table ")
 	}
 	users := make([]User, 0)
 	for rows.Next() {

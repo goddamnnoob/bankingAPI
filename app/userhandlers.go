@@ -34,7 +34,7 @@ func (uh UserHandlers) getUsersByStatus(rw http.ResponseWriter, r *http.Request)
 	if b && status[0] == "active" {
 		st = 1
 	}
-	if !b || len(status) == 0 {
+	if !b || len(status) == 0 || status[0] == "" {
 		users, err = uh.service.GetAllUsers()
 	} else {
 		users, err = uh.service.GetUserByStatus(st)

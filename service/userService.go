@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/goddamnnoob/notReddit/domain"
+	"github.com/goddamnnoob/notReddit/dto"
 	"github.com/goddamnnoob/notReddit/errs"
 )
 
@@ -23,7 +24,7 @@ func NewUserService(repository domain.UserRepository) DefaultUserService {
 	return DefaultUserService{repository}
 }
 
-func (s DefaultUserService) GetUser(id string) (*domain.User, *errs.AppError) {
+func (s DefaultUserService) GetUser(id string) (*dto.UserResponse, *errs.AppError) {
 	return s.repo.ById(id)
 }
 

@@ -37,9 +37,8 @@ func NewUserRepositoryDb() UserRepositoryDb {
 
 func (d UserRepositoryDb) ById(id string) (*User, *errs.AppError) {
 	byId := "select customer_id,name,city,zipcode,date_of_birth, status from customers where customer_id=?"
-	rows := d.client.QueryRow(byId, id)
 	var u User
-	err := rows.Scan(&u.Id, &u.Name, &u.City, &u.Zipcode, &u.DateOfBirth, &u.Status)
+	err := d.client.Get(&u, byId, id)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			logger.Error("Error while scanning customers" + err.Error())

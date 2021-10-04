@@ -22,11 +22,16 @@ type UserRepository interface {
 	ByStatus(int) ([]User, *errs.AppError)
 }
 
-func (u User) ToDto() dto.UserResponse {
+func (u User) toStatusAsText() string {
 	statusAsText := "active"
 	if u.Status == "0" {
 		statusAsText = "inactive"
 	}
+	return statusAsText
+}
+
+func (u User) ToDto() dto.UserResponse {
+	statusAsText := u.toStatusAsText()
 	return dto.UserResponse{
 		Id:          u.Id,
 		Name:        u.Name,

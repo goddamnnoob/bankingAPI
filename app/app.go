@@ -3,6 +3,7 @@ package app
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/goddamnnoob/notReddit/domain"
 	"github.com/goddamnnoob/notReddit/service"
@@ -10,7 +11,8 @@ import (
 )
 
 func Start() {
-
+	address := os.Getenv("SERVER_ADDRESS")
+	port := os.Getenv("SERVER_PORT")
 	// router/multiplexer to route
 	router := mux.NewRouter()
 
@@ -21,5 +23,5 @@ func Start() {
 	router.HandleFunc("/getAllUsers", uh.getAllUsers).Methods(http.MethodGet)
 	router.HandleFunc("/users", uh.getUsersByStatus).Methods(http.MethodGet)
 	router.HandleFunc("/users/{user_id:[0-9]+}", uh.getUser).Methods(http.MethodGet)
-	log.Fatal(http.ListenAndServe("localhost:8080", router))
+	log.Fatal(http.ListenAndServe(address+":"+port, router))
 }

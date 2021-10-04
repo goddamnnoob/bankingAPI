@@ -2,6 +2,7 @@ package domain
 
 import (
 	"database/sql"
+	"os"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -25,7 +26,14 @@ func (d UserRepositoryDb) GetAllUsers() ([]User, *errs.AppError) {
 }
 
 func NewUserRepositoryDb() UserRepositoryDb {
-	client, err := sqlx.Open("mysql", "root:root@tcp(localhost:3306)/banking")
+	var (
+		db_username string = os.Getenv("DATABASE_USERNAME")
+		db_password string = os.Getenv("DATABASE_PASSWORD")
+		db_name     string = os.Getenv("DATABASE_NAME")
+		db_address  string = os.Getenv("DATABASE_SERVER_ADDRESS")
+		db_port     string = os.Getenv("DATABASE_SERVER_PORT")
+	)
+	client, err := sqlx.Open("mysql", db_username+":"+db_password+"@tcp("+db_address+":"+db_port+")/"+db_name)
 	if err != nil {
 		panic(err)
 	}

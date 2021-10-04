@@ -10,6 +10,7 @@ require (
 
 require (
 	github.com/jmoiron/sqlx v1.3.4 // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
 )

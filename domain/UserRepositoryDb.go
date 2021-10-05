@@ -2,8 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"os"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goddamnnoob/notReddit/errs"
@@ -25,22 +23,8 @@ func (d UserRepositoryDb) GetAllUsers() ([]User, *errs.AppError) {
 	return users, nil
 }
 
-func NewUserRepositoryDb() UserRepositoryDb {
-	var (
-		db_username string = os.Getenv("DATABASE_USERNAME")
-		db_password string = os.Getenv("DATABASE_PASSWORD")
-		db_name     string = os.Getenv("DATABASE_NAME")
-		db_address  string = os.Getenv("DATABASE_SERVER_ADDRESS")
-		db_port     string = os.Getenv("DATABASE_SERVER_PORT")
-	)
-	client, err := sqlx.Open("mysql", db_username+":"+db_password+"@tcp("+db_address+":"+db_port+")/"+db_name)
-	if err != nil {
-		panic(err)
-	}
-	client.SetConnMaxIdleTime(time.Minute * 3)
-	client.SetMaxIdleConns(10)
-	client.SetMaxOpenConns(10)
-	return UserRepositoryDb{client}
+func NewUserRepositoryDb(dbClient *sqlx.DB) UserRepositoryDb {
+	return UserRepositoryDb{dbClient}
 }
 
 func (d UserRepositoryDb) ById(id string) (*User, *errs.AppError) {

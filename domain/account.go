@@ -16,6 +16,8 @@ type Account struct {
 
 type AccountRepository interface {
 	Save(Account) (*Account, *errs.AppError)
+	FindBy(string) (*Account, *errs.AppError)
+	SaveTransactions(Transaction) (*Transaction, *errs.AppError)
 }
 
 func (a Account) ToNewAccountResponseDto() dto.NewAccountResponse {

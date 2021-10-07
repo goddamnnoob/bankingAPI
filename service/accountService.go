@@ -10,6 +10,7 @@ import (
 
 type AccountService interface {
 	NewAccount(dto.NewAccountRequest) (*dto.NewAccountResponse, *errs.AppError)
+	MakeTransaction(dto.TransactionRequest) (*dto.TransactionResponse, *errs.AppError)
 }
 
 type DefaultAccountService struct {
@@ -37,6 +38,31 @@ func (s DefaultAccountService) NewAccount(req dto.NewAccountRequest) (*dto.NewAc
 	res := newAccount.ToNewAccountResponseDto()
 
 	return &res, nil
+}
+
+func (s DefaultAccountService) MakeTransaction(req dto.TransactionRequest) (*dto.TransactionResponse, *errs.AppError) {
+	err := req.Validate()
+	if err != nil {
+		return nil, err
+	}
+	if req.TransactionType == "withdraw" {
+		_, err := s.repo.FindBy(req.AccountId)
+		if err != nil {
+			return nil, err
+		}
+	}
+	t := domain.Transaction{
+		AccountId:       req.AccountId,
+		Amount:          req.Amount,
+		TransactionType: req.TransactionType,
+		TransactionDate: time.Now().Format("2006-01-02 15:04:05"),
+	}
+	transaction, appError := s.repo.SaveTransactions(t)
+	if err != nil {
+		return nil, appError
+	}
+	response := transaction.ToDto()
+	return &response, nil
 }
 
 func NewAccountService(repo domain.AccountRepository) DefaultAccountService {

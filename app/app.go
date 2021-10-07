@@ -29,6 +29,7 @@ func Start() {
 	router.HandleFunc("/users", uh.getUsersByStatus).Methods(http.MethodGet)
 	router.HandleFunc("/users/{user_id:[0-9]+}", uh.getUser).Methods(http.MethodGet)
 	router.HandleFunc("/users/{user_id:[0-9]+}/account", ah.NewAccount).Methods(http.MethodPost)
+	router.HandleFunc("/users/{user_id:[0-9]+}/account/{account_id:[0-9]+}", ah.MakeTransaction).Methods(http.MethodPost)
 	log.Fatal(http.ListenAndServe(address+":"+port, router))
 }
 

@@ -6,12 +6,12 @@ import (
 )
 
 type Account struct {
-	AccountId   string
-	UserId      string
-	OpeningDate string
-	AccountType string
-	Amount      float64
-	Status      string
+	AccountId   string  `json:"account_id"`
+	UserId      string  `json: "user_id"`
+	OpeningDate string  `json:"opening_date"`
+	AccountType string  `json:"account_type"`
+	Amount      float64 `json:"amount"`
+	Status      string  `json:"status"`
 }
 
 type AccountRepository interface {

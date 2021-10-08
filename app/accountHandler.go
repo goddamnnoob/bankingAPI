@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/goddamnnoob/notReddit/dto"
-	"github.com/goddamnnoob/notReddit/logger"
 	"github.com/goddamnnoob/notReddit/service"
 	"github.com/gorilla/mux"
 )
@@ -38,7 +37,6 @@ func (ah AccountHandler) MakeTransaction(rw http.ResponseWriter, r *http.Request
 	userId := vars["user_id"]
 	var request dto.TransactionRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
-	logger.Error("Transaction type" + request.TransactionType)
 	if err != nil {
 		writeResponse(rw, http.StatusBadRequest, err.Error())
 	} else {

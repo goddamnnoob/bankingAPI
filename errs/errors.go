@@ -28,6 +28,20 @@ func NewValidationError(message string) *AppError {
 	}
 }
 
+func NewAuthenticatonError(message string) *AppError {
+	return &AppError{
+		Message: message,
+		Code:    http.StatusUnauthorized,
+	}
+}
+
+func NewAuthorizationError(message string) *AppError {
+	return &AppError{
+		Message: message,
+		Code:    http.StatusForbidden,
+	}
+}
+
 func (a AppError) AsMessage() *AppError {
 	return &AppError{
 		Message: a.Message,
